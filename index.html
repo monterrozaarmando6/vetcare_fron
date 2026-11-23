@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>VetCare | Gestión veterinaria</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <main id="auth-view" class="auth-shell">
+    <section class="auth-panel">
+      <div class="brand"><span class="brand-mark">✦</span><span>VetCare</span></div>
+      <p class="eyebrow">GESTIÓN VETERINARIA</p>
+      <h1>Todo el cuidado, en un solo lugar.</h1>
+      <p class="lede">Administra pacientes, citas, inventario y facturación con una experiencia clara y segura.</p>
+      <div class="auth-art" aria-hidden="true"><span>🐾</span><i></i><b></b></div>
+    </section>
+    <section class="auth-card-wrap">
+      <form id="login-form" class="auth-card">
+        <p class="eyebrow">BIENVENIDO</p><h2>Inicia sesión</h2>
+        <p class="muted">Accede a la plataforma de tu clínica.</p>
+        <label>Correo electrónico<input name="email" type="email" autocomplete="email" required placeholder="tu@clinica.com" /></label>
+        <label>Contraseña<input name="password" type="password" autocomplete="current-password" required placeholder="••••••••" /></label>
+        <button class="primary" type="submit">Entrar <span>→</span></button>
+        <button class="link" type="button" id="recover-button">¿Olvidaste tu contraseña?</button>
+        <p class="api-status" id="api-status">Comprobando conexión con la API…</p>
+      </form>
+    </section>
+  </main>
+  <main id="app-view" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark">✦</span><span>VetCare</span></div>
+      <nav id="navigation" aria-label="Navegación principal"></nav>
+      <div class="sidebar-bottom"><button id="theme-button" class="nav-button">◐ <span>Tema</span></button><button id="logout-button" class="nav-button danger">↪ <span>Cerrar sesión</span></button></div>
+    </aside>
+    <section class="workspace">
+      <header class="topbar"><button id="menu-button" class="mobile-menu" aria-label="Abrir menú">☰</button><div><p id="page-kicker" class="eyebrow">VETCARE</p><h1 id="page-title">Panel principal</h1></div><div class="profile"><span id="role-chip">ADMIN</span><span class="avatar" id="avatar">A</span></div></header>
+      <div id="content" class="content" tabindex="-1"></div>
+    </section>
+  </main>
+  <dialog id="record-dialog"><form method="dialog" id="record-form" class="modal"><div class="modal-head"><div><p class="eyebrow">NUEVO REGISTRO</p><h2 id="dialog-title">Crear</h2></div><button class="icon-button" value="cancel" aria-label="Cerrar">×</button></div><div id="form-fields" class="form-grid"></div><div class="modal-actions"><button value="cancel" class="secondary">Cancelar</button><button class="primary" id="save-record" value="default">Guardar</button></div></form></dialog>
+  <script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>
