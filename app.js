@@ -62,12 +62,23 @@
   }
   function openForm(meta) { const dialog = $("#record-dialog"); $("#dialog-title").textContent = `Nuevo ${meta.singular}`; $("#form-fields").innerHTML = meta.fields.map(f => `<label>${friendly(f)}<input name="${f}" ${f.includes("Date") || f === "date" ? "type=\"date\"" : f === "password" ? "type=\"password\"" : ""} required /></label>`).join(""); dialog.showModal(); }
   $("#record-form").addEventListener("submit", async (event) => { if (event.submitter?.value === "cancel") return; event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); try { await request(`/${state.current}`, { method:"POST", body: JSON.stringify(data) }); $("#record-dialog").close(); notify("Registro guardado correctamente"); render(); } catch(e) { notify(e.message, true); } });
-  async function checkApi() { try { await fetch(`${API}/health`); $("#api-status").textContent = "● API conectada"; } catch { $("#api-status").textContent = "● API no disponible. Configura config.js"; } }
-  $("#login-form").addEventListener("submit", async (event) => { event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); try { const result = await request("/auth/login", { method:"POST", body:JSON.stringify(data) }); state.session = result; localStorage.setItem("vetcare_session", JSON.stringify(result)); startApp(); } catch(e) { notify(e.message, true); } });
-  $("#recover-button").onclick = async () => { const email = prompt("Escribe tu correo electrónico:"); if (!email) return; try { await request("/auth/recover", { method:"POST", body:JSON.stringify({email}) }); notify("Solicitud de recuperación registrada."); } catch(e) { notify(e.message, true); } };
-  $("#logout-button").onclick = () => { localStorage.removeItem("vetcare_session"); state.session = null; $("#app-view").classList.add("hidden"); $("#auth-view").classList.remove("hidden"); };
-  $("#theme-button").onclick = () => { document.body.dataset.theme = document.body.dataset.theme === "dark" ? "" : "dark"; };
-  $("#menu-button").onclick = () => $("#sidebar").classList.toggle("open");
+ 
+async function checkApi() {
+    try {
+        const response = await fetch(
+            `${API.replace(/\/api$/, "")}/actuator/health`
+        );
+
+        if (!response.ok) {
+            throw new Error("API no disponible");
+        }
+
+        $("#api-status").textContent = "● API conectada";
+    } catch (error) {
+        $("#api-status").textContent = "● API no disponible. Verifica CORS y la conexión.";
+    }
+}
+
   function startApp() { $("#auth-view").classList.add("hidden"); $("#app-view").classList.remove("hidden"); $("#role-chip").textContent = state.session.role; $("#avatar").textContent = state.session.role[0]; if (!permitted(state.current)) state.current = "dashboard"; setupNavigation(); render(); }
   function escapeHtml(text) { const d=document.createElement("div"); d.textContent=text; return d.innerHTML; }
   checkApi(); if (state.session) startApp();
